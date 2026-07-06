@@ -898,8 +898,8 @@ def check_and_send_reminders():
             print(f"[reminder] Failed for booking {b['id']}: {e}")
 
 
-MAID_NAME = 'Mandy Giles'
-MAID_PHONE = '251-243-8068'
+MAID_NAME = 'Brandy Johnston'
+MAID_PHONE = '251-242-5170'
 
 
 
