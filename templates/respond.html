@@ -190,7 +190,7 @@
         <textarea name="message" placeholder="Optional message..."></textarea>
         <div class="attend-btns">
           <button class="btn-yes" type="submit" name="attending" value="yes">Yes, I'll be there</button>
-          <button class="btn-no" type="submit" name="attending" value="no">No, I can't make it</button>
+          <button class="btn-no" type="button" onclick="confirmCancel()">No, I can't make it</button>
         </div>
       </form>
     {% endif %}
@@ -198,5 +198,18 @@
   </div>
 </div>
 
+<script>
+function confirmCancel() {
+  if (confirm("Are you sure? Clicking OK will cancel your reservation and open that week to other Dixie Summerhouse members.")) {
+    var form = document.querySelector('form');
+    var input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'attending';
+    input.value = 'no';
+    form.appendChild(input);
+    form.submit();
+  }
+}
+</script>
 </body>
 </html>
