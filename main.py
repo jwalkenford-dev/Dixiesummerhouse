@@ -871,6 +871,17 @@ def gcal_sync_all():
 
 
 
+@app.post('/api/bookings/<int:booking_id>/clear-response')
+@login_required
+def clear_guest_response(booking_id):
+    b = get_booking_by_id(booking_id)
+    if not b:
+        return jsonify({'error': 'Booking not found.'}), 404
+    from database import save_guest_response
+    save_guest_response(b['token'], '')
+    return jsonify({'ok': True})
+
+
 @app.get('/api/diag/test-response-ack/<int:booking_id>')
 @login_required
 def test_response_ack(booking_id):
