@@ -2,6 +2,7 @@ import os
 import resend
 
 FROM_ADDRESS = 'Dixie Summerhouse Condo <dixiesummerhouse@dixiesummerhouse.com>'
+ADMIN_NOTIFY_EMAIL = 'dixiesummerhouse@gmail.com'
 
 
 def _send(to, subject, text, html=None):
@@ -88,6 +89,10 @@ We look forward to having you!
 </html>"""
 
     _send(to_address, subject, plain, html)
+    try:
+        _send(ADMIN_NOTIFY_EMAIL, f'[Copy] {subject} — {guest_name}', plain, html)
+    except Exception:
+        pass
 
 
 def send_cancellation_notice(to_address, guest_name, checkin_str, checkout_str):
@@ -182,3 +187,17 @@ View it at: https://dixiesummerhouse.com/photos
 — Dixie Summerhouse Condo
 """
     _send(to_addresses, subject, body)
+
+
+def send_response_notification(guest_name, attending, checkin_str, checkout_str, message=''):
+    status = 'CONFIRMED' if attending == 'yes' else 'DECLINED'
+    subject = f'Guest Response: {guest_name} — {status}'
+    message_line = f'\n\nGuest message: {message}' if message else ''
+    body = f"""{guest_name} has {status.lower()} their stay at Dixie Summerhouse Condo.
+
+Check-in:  {checkin_str}
+Checkout:  {checkout_str}{message_line}
+
+— Dixie Summerhouse Condo
+"""
+    _send(ADMIN_NOTIFY_EMAIL, subject, body)

@@ -48,7 +48,7 @@ from database import (
     update_family,
 )
 import gcal
-from email_sender import send_reminder, send_response_ack, send_cancellation_notice, send_maid_notice, send_availability_email, send_comment_notification, send_photo_notification
+from email_sender import send_reminder, send_response_ack, send_cancellation_notice, send_maid_notice, send_availability_email, send_comment_notification, send_photo_notification, send_response_notification
 
 
 def broadcast_availability(checkin, checkout, guest_name='', guest_phone=''):
@@ -524,12 +524,20 @@ def respond_page(token):
                 )
             except Exception:
                 pass
+        try:
+            send_response_notification(guest_name, 'no', checkin.strftime('%B %d, %Y'), checkout.strftime('%B %d, %Y'))
+        except Exception:
+            pass
         broadcast_availability(checkin, checkout, guest_name=guest_name, guest_phone=guest_phone)
         return render_template('respond.html', not_found=False, cancelled=True, booking_name=guest_name, submitted=False)
 
     if attending == 'yes':
         save_guest_response(token, 'Confirmed')
         mark_reminder_sent(b['id'])
+        try:
+            send_response_notification(b['name'], 'yes', checkin.strftime('%B %d, %Y'), checkout.strftime('%B %d, %Y'))
+        except Exception:
+            pass
         return render_template(
             'respond.html',
             booking=b,
@@ -579,6 +587,10 @@ def submit_response(token):
                 )
             except Exception:
                 pass
+        try:
+            send_response_notification(guest_name, 'no', checkin.strftime('%B %d, %Y'), checkout.strftime('%B %d, %Y'))
+        except Exception:
+            pass
         broadcast_availability(checkin, checkout, guest_name=guest_name, guest_phone=guest_phone)
         return render_template('respond.html', not_found=False, cancelled=True, booking_name=guest_name, submitted=False)
 
@@ -590,6 +602,13 @@ def submit_response(token):
                 send_response_ack(ack_email, b['name'])
             except Exception:
                 pass
+
+    checkin = parse_date(b['checkin'])
+    checkout = checkin + timedelta(days=7)
+    try:
+        send_response_notification(b['name'], 'yes', checkin.strftime('%B %d, %Y'), checkout.strftime('%B %d, %Y'), message)
+    except Exception:
+        pass
 
     return redirect(url_for('respond_page', token=token, submitted=1))
 
