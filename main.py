@@ -515,10 +515,11 @@ def respond_page(token):
         if b.get('gcal_event_id'):
             gcal.delete_event(b['gcal_event_id'])
         delete_booking(b['id'])
-        if guest_email:
+        cancellation_emails = [guest_email] if guest_email else get_family_emails_for_booking_name(guest_name)
+        for email in cancellation_emails:
             try:
                 send_cancellation_notice(
-                    guest_email, guest_name,
+                    email, guest_name,
                     checkin.strftime('%B %d, %Y'),
                     checkout.strftime('%B %d, %Y'),
                 )
