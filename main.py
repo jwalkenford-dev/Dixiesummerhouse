@@ -110,6 +110,7 @@ def login_submit():
     admins = [
         ((os.getenv('ADMIN_EMAIL') or '').strip().lower(), os.getenv('ADMIN_PASSWORD') or ''),
         ((os.getenv('ADMIN_EMAIL_2') or '').strip().lower(), os.getenv('ADMIN_PASSWORD_2') or ''),
+        ((os.getenv('ADMIN_EMAIL_3') or '').strip().lower(), os.getenv('ADMIN_PASSWORD_3') or ''),
     ]
     for admin_email, admin_password in admins:
         if admin_email and email == admin_email and password == admin_password:
