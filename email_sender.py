@@ -116,7 +116,7 @@ A few reminders as your checkout approaches:
 
 1. Contact Maid — {maid_name} at {maid_phone} by Monday prior to checkout to let her know what day and time you'll be departing.
 
-2. Ensure sheets and towels are clean and there is no more than 1 load in the washing machine.
+2. Ensure sheets and towels are clean and there is no more than 1 load in the dryer.
 
 3. Ensure there is enough soap, dishwashing detergent, laundry detergent, paper towels, and toilet paper for at least 2 days use.
 
